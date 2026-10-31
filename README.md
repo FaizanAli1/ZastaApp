@@ -144,8 +144,9 @@ What I take from this:
 
 ## Exploratory testing and CI
 
-- Findings, how I tested and my conclusion: [`docs/exploratory-testing.md`](docs/exploratory-testing.md)
-- CI/CD concept: [`docs/ci-concept.md`](docs/ci-concept.md)
+- Findings, how I tested and my conclusion: exploratory-testing.md
+- CI/CD concept: ci-concept.md
+
 
 ## If I had more time
 
