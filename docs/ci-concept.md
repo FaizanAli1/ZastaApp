@@ -13,7 +13,7 @@ Linting, the TypeScript check and unit tests first. If those pass, the Maestro s
 The full suite runs - happy path and all unhappy paths - on one iPhone simulator and one Android emulator in parallel.
 
 **Every night**
-The full suite again, but on more than one OS version per platform: the oldest one we support and the newest one. For this app that means iOS 16.4 (the minimum the build allows) and the current iOS 26, and the same idea on Android. I saw why this matters while writing the tests: my iOS flows passed on 17.4 but some selectors broke on 17.5 and 26.1. The known-bug flows also run at night, just for information.
+The full suite again, but on more than one OS version per platform: the oldest one we support and the newest one. For this app that means iOS 16.4 (the minimum the build allows) and the current iOS 26, and the same idea on Android.
 
 **Before a release**
 The nightly run on all versions, plus a manual exploratory session.

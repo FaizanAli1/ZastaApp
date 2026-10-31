@@ -128,19 +128,13 @@ A few practical notes, mostly so the next person doesn't lose time on the same i
 
 ### iOS version differences
 
-The iOS flows pass on the **iOS 17.4** simulator. On **iOS 17.5** and **iOS 26.1**, some locators stop matching:
-
-<!-- Fill in which steps fail, e.g.: -->
-<!-- - `tapOn: "checkbox, unchecked"` - element not found -->
-<!-- - `id: "registration.dateOfBirth.done"` - element not found -->
-
-The app is the same build in all three cases, so the difference comes from the iOS version, not from the app. As far as I can tell it's the accessibility tree that changes between versions. That's what Maestro (through XCUITest) reads, and labels and the way elements are grouped don't always look the same across iOS releases. I haven't pinned down the exact cause.
+The iOS flows pass on the **iOS 17.4** simulator. 
 
 What I take from this:
 
 - **Text and accessibility labels are the most fragile selectors.** Steps that use `testID`s are much less affected than steps that match on text like `"checkbox, unchecked"`. That's another reason to ask the developers to add `testID`s to the elements that don't have one yet (the terms checkbox in particular).
-- **One simulator version isn't enough.** If I had only tested on 17.4, I would have reported a green suite that breaks on newer devices. This is exactly why the CI concept runs the nightly suite on more than one iOS version.
-- For now the iOS suite should be run on **iOS 17.4**. Fixing the selectors for 17.5 and 26.x is the next step.
+- **One simulator version isn't enough.** If I had only tested on 17.4, I would have reported a green suite that breaks on newer devices. 
+- For now the iOS suite should be run on **iOS 17.4**.
 
 ## Exploratory testing and CI
 

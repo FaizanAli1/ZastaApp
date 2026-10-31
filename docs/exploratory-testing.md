@@ -36,13 +36,12 @@ I ordered them by risk: first anything that could stop people from registering, 
 | 1 | A name of only spaces is accepted | Medium | |
 | 2 | Names are cut off at 20 characters | Medium | |
 | 3 | "Complete Registration" only reacts when you tap the text | Medium | |
-| 4 | The code field is read out as "Field" by screen readers | Medium | iOS |
-| 5 | The terms can't be opened or read | Medium | |
-| 6 | The checkmark icons may not show on Android | Medium | Android |
-| 7 | The age check is a day off in some time zones | Low | |
-| 8 | The password rules are weak | Low | |
-| 9 | Some broken email addresses are accepted | Low | |
-| 10 | Locators behave differently between iOS versions | Info | iOS |
+| 4 | The terms can't be opened or read | Medium | |
+| 5 | The checkmark icons may not show on Android | Medium | Android |
+| 6 | The age check is a day off in some time zones | Low | |
+| 7 | The password rules are weak | Low | |
+| 8 | Some broken email addresses are accepted | Low | |
+| 9 | Locators behave differently between iOS versions | Info | iOS |
 
 **1. A name of only spaces is accepted.**
 If you type three spaces as your name, the form accepts it. At the end the success screen says "Welcome, !". The app checks the length *before* removing the spaces and removes them *after*, so "   " counts as 3 characters. The same thing lets " A" through, which ends up as the one-letter name "A". The fix is simple: trim first, then check. I wrote a test for this that fails until it's fixed (`12_BUG_only_whitespace_in_name`).
