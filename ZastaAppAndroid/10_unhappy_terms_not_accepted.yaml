@@ -1,0 +1,67 @@
+appId: com.example.testapp
+name: "Unhappy: terms not accepted"
+tags:
+  - regression
+---
+# A correct code without accepting the terms must not complete the registration.
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "registration.name"
+    timeout: 15000
+
+# Fill the form
+- tapOn:
+    id: "registration.name"
+- inputText: "Faizan Ali"
+- tapOn:
+    id: "registration.email"
+- inputText: "faizan.ali@example.com"
+- tapOn:
+    id: "registration.password"
+- inputText: "value123"
+- tapOn:
+    id: "registration.confirmPassword"
+- inputText: "value123"
+
+# Close keyboard (tap the title, NOT hideKeyboard)
+- tapOn:
+    text: "Create your account"
+
+# Date of birth: open picker, confirm the default date (today - 25 years)
+- scrollUntilVisible:
+    element:
+      id: "registration.dateOfBirth"
+    direction: DOWN
+- tapOn:
+    id: "registration.dateOfBirth"
+- tapOn:
+    text: "(?i)ok"
+    optional: true
+- tapOn:
+    id: "registration.dateOfBirth.done"
+    optional: true
+
+# Press Continue
+- scrollUntilVisible:
+    element:
+      id: "registration.continue"
+    direction: DOWN
+- tapOn:
+    id: "registration.continue"
+- assertVisible: "Verify your account"
+
+# Enter code and close the number pad
+- tapOn:
+    id: "verification.code"
+- inputText: "123456"
+- tapOn:
+    text: "Verify your account"
+- tapOn:
+    id: "verification.submit"
+
+# Expected
+- assertVisible: "You must accept the terms and conditions."
+- assertNotVisible:
+    id: "success.screen"

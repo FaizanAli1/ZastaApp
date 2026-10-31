@@ -1,0 +1,70 @@
+appId: com.example.testapp
+name: "iOS - Unhappy: user younger than 16"
+tags:
+  - ios
+  - regression
+---
+- evalScript: ${output.underageYear = String(new Date().getFullYear())}
+# iOS uses a wheel (month | day | year) that opens at today - 25 years.
+# We swipe the YEAR column until the underage year shows, then tap it
+# (tapping a visible row on an iOS wheel selects it). Years are computed at runtime.
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "registration.name"
+    timeout: 15000
+
+# Fill the form
+- tapOn:
+    id: "registration.name"
+- inputText: "Faizan Ali"
+- tapOn:
+    id: "registration.email"
+- inputText: "faizan.ali@example.com"
+- tapOn:
+    id: "registration.password"
+- inputText: "value123"
+- tapOn:
+    id: "registration.confirmPassword"
+- inputText: "value123"
+
+# Close keyboard (tap the title)
+- tapOn: "Create your account"
+
+# Open the wheel
+- scrollUntilVisible:
+    element:
+      id: "registration.dateOfBirth"
+    direction: DOWN
+- tapOn:
+    id: "registration.dateOfBirth"
+
+# Swipe the year column (start on any visible 4-digit year); slow swipes avoid overshooting
+- repeat:
+    while:
+      notVisible: ${output.underageYear}
+    times: 15
+    commands:
+      - swipe:
+          from:
+            text: "(19|20)\\d\\d"
+          direction: UP
+          duration: 1500
+- tapOn: ${output.underageYear}
+- tapOn:
+    id: "registration.dateOfBirth.done"
+
+# Press Continue
+- scrollUntilVisible:
+    element:
+      id: "registration.continue"
+    direction: DOWN
+- tapOn:
+    id: "registration.continue"
+
+# Expected
+- assertVisible:
+    id: "registration.dateOfBirthError"
+    text: "You must be at least 16 years old."
+- assertNotVisible: "Verify your account"

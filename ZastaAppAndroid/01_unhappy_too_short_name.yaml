@@ -1,0 +1,56 @@
+appId: com.example.testapp
+name: "Unhappy: name too short"
+tags:
+  - regression
+---
+# A 1-character name must be rejected.
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "registration.name"
+    timeout: 15000
+
+# Fill the form
+- tapOn:
+    id: "registration.name"
+- inputText: "M"
+- tapOn:
+    id: "registration.email"
+- inputText: "faizan.ali@example.com"
+- tapOn:
+    id: "registration.password"
+- inputText: "value123"
+- tapOn:
+    id: "registration.confirmPassword"
+- inputText: "value123"
+
+# Close keyboard (tap the title, NOT hideKeyboard)
+- tapOn:
+    text: "Create your account"
+
+# Date of birth: open picker, confirm the default date (today - 25 years)
+- scrollUntilVisible:
+    element:
+      id: "registration.dateOfBirth"
+    direction: DOWN
+- tapOn:
+    id: "registration.dateOfBirth"
+- tapOn:
+    text: "(?i)ok"
+    optional: true
+- tapOn:
+    id: "registration.dateOfBirth.done"
+    optional: true
+
+# Press Continue
+- scrollUntilVisible:
+    element:
+      id: "registration.continue"
+    direction: DOWN
+- tapOn:
+    id: "registration.continue"
+
+# Expected
+- assertVisible: "Full name must be at least 2 characters."
+- assertNotVisible: "Verify your account"

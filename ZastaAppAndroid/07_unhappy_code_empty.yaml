@@ -1,0 +1,62 @@
+appId: com.example.testapp
+name: "Unhappy: verification code empty"
+tags:
+  - regression
+---
+# Submitting without a code must show 'required' (terms ticked, so only the code is wrong).
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "registration.name"
+    timeout: 15000
+
+# Fill the form
+- tapOn:
+    id: "registration.name"
+- inputText: "Faizan Ali"
+- tapOn:
+    id: "registration.email"
+- inputText: "faizan.ali@example.com"
+- tapOn:
+    id: "registration.password"
+- inputText: "value123"
+- tapOn:
+    id: "registration.confirmPassword"
+- inputText: "value123"
+
+# Close keyboard (tap the title, NOT hideKeyboard)
+- tapOn:
+    text: "Create your account"
+
+# Date of birth: open picker, confirm the default date (today - 25 years)
+- scrollUntilVisible:
+    element:
+      id: "registration.dateOfBirth"
+    direction: DOWN
+- tapOn:
+    id: "registration.dateOfBirth"
+- tapOn:
+    text: "(?i)ok"
+    optional: true
+- tapOn:
+    id: "registration.dateOfBirth.done"
+    optional: true
+
+# Press Continue
+- scrollUntilVisible:
+    element:
+      id: "registration.continue"
+    direction: DOWN
+- tapOn:
+    id: "registration.continue"
+- assertVisible: "Verify your account"
+
+- tapOn: "I accept the terms and conditions"
+- tapOn:
+    id: "verification.submit"
+
+# Expected
+- assertVisible: "Verification code is required."
+- assertNotVisible:
+    id: "success.screen"

@@ -1,0 +1,70 @@
+appId: com.example.testapp
+name: "Unhappy: wrong verification code"
+tags:
+  - regression
+---
+# A correctly formatted but wrong code is rejected after the simulated check (600-1200 ms).
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "registration.name"
+    timeout: 15000
+
+# Fill the form
+- tapOn:
+    id: "registration.name"
+- inputText: "Faizan Ali"
+- tapOn:
+    id: "registration.email"
+- inputText: "faizan.ali@example.com"
+- tapOn:
+    id: "registration.password"
+- inputText: "value123"
+- tapOn:
+    id: "registration.confirmPassword"
+- inputText: "value123"
+
+# Close keyboard (tap the title, NOT hideKeyboard)
+- tapOn:
+    text: "Create your account"
+
+# Date of birth: open picker, confirm the default date (today - 25 years)
+- scrollUntilVisible:
+    element:
+      id: "registration.dateOfBirth"
+    direction: DOWN
+- tapOn:
+    id: "registration.dateOfBirth"
+- tapOn:
+    text: "(?i)ok"
+    optional: true
+- tapOn:
+    id: "registration.dateOfBirth.done"
+    optional: true
+
+# Press Continue
+- scrollUntilVisible:
+    element:
+      id: "registration.continue"
+    direction: DOWN
+- tapOn:
+    id: "registration.continue"
+- assertVisible: "Verify your account"
+
+# Enter code and close the number pad
+- tapOn:
+    id: "verification.code"
+- inputText: "000000"
+- tapOn:
+    text: "Verify your account"
+- tapOn: "I accept the terms and conditions"
+- tapOn:
+    id: "verification.submit"
+
+# Expected (wait for the async check, don't sleep)
+- extendedWaitUntil:
+    visible: "The verification code is incorrect. Please try again."
+    timeout: 10000
+- assertNotVisible:
+    id: "success.screen"

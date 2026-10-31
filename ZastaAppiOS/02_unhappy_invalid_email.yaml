@@ -1,0 +1,52 @@
+appId: com.example.testapp
+name: "iOS - Unhappy: invalid email"
+tags:
+  - ios
+  - regression
+---
+# An email without a valid domain ending must be rejected.
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "registration.name"
+    timeout: 15000
+
+# Fill the form
+- tapOn:
+    id: "registration.name"
+- inputText: "Faizan Ali"
+- tapOn:
+    id: "registration.email"
+- inputText: "faizan@example"
+- tapOn:
+    id: "registration.password"
+- inputText: "value123"
+- tapOn:
+    id: "registration.confirmPassword"
+- inputText: "value123"
+
+# Close keyboard (tap the title)
+- tapOn: "Create your account"
+
+# Date of birth: open the wheel, confirm the default date (today - 25 years)
+- scrollUntilVisible:
+    element:
+      id: "registration.dateOfBirth"
+    direction: DOWN
+- tapOn:
+    id: "registration.dateOfBirth"
+- tapOn:
+    id: "registration.dateOfBirth.done"
+
+# Press Continue
+- scrollUntilVisible:
+    element:
+      id: "registration.continue"
+    direction: DOWN
+- tapOn:
+    id: "registration.continue"
+
+# Expected
+- assertVisible: "Enter a valid email address."
+- assertNotVisible: "Verify your account"

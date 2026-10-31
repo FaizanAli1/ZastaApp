@@ -1,0 +1,5 @@
+# Runs all iOS flows except the one that documents a known bug.
+flows:
+  - "*"
+excludeTags:
+  - known-bug

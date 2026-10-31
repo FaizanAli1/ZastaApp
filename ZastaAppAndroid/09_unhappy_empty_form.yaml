@@ -1,0 +1,28 @@
+appId: com.example.testapp
+name: "Unhappy: empty form"
+tags:
+  - regression
+---
+# Continue on an empty form must show an error for every field and stay on the screen.
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "registration.name"
+    timeout: 15000
+
+# Press Continue
+- scrollUntilVisible:
+    element:
+      id: "registration.continue"
+    direction: DOWN
+- tapOn:
+    id: "registration.continue"
+
+# Expected errors
+- assertVisible: "Full name is required."
+- assertVisible: "Email address is required."
+- assertVisible: "Password is required."
+- assertVisible: "Please confirm your password."
+- assertVisible: "Date of birth is required."
+- assertNotVisible: "Verify your account"
